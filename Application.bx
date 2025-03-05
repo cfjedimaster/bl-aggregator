@@ -4,10 +4,10 @@ class {
 
 	this.datasource = {
 		driver:"mysql",
-		host:"192.168.68.50",
-		port:3306,
+		host:server.system.environment.MYSQL_HOST,
+		port:server.system.environment.MYSQL_PORT,
 		database:"aggregator", 
-		username:"boxlang",
+		username:server.system.environment.MYSQL_USERNAME,
 		password:server.system.environment.MYSQL_PWORD
 	};
 
