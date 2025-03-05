@@ -1,0 +1,31 @@
+body {
+	padding: 10px;
+}
+
+h1, h2 {
+    font-family: var(--sl-font-sans);
+	font-weight: var(--sl-font-weight-semibold);
+}
+
+div, p {
+    font-family: var(--sl-font-sans);
+}
+
+div.header {
+	background-color: var(--sl-color-primary-50);
+	padding:10px;
+	margin-bottom: 15px;
+	font-family: var(--sl-font-sans); 
+}
+
+div.header a {
+	color: white;
+}
+
+sl-card.item {
+	margin-bottom: 25px;
+}
+
+sl-card {
+	display:block;
+}

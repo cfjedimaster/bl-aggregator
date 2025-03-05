@@ -1,0 +1,100 @@
+class {
+
+	public function init() {
+		println('called init');
+		variables.rss = createObject('java', 'com.apptasticsoftware.rssreader.RssReader');
+	}
+
+	public function getBlogs() {
+		return queryExecute('
+		select id, name, url, rssurl from blogs 
+		order by name asc
+		', { returnType:'array' });
+
+	}
+
+	/*
+	Given a blog record, I fetch items for it via the RSS url.
+	*/
+	public function fetchItemsForFeed(f) { 
+		items = variables.rss.read(f.rssurl).toList();
+		return items.map(i => {
+			result = {
+				title:'',
+				content:'',
+				pubdate:'',
+				link:''
+			}
+
+			i.getTitle().ifPresent(t => result.title = t);
+			i.getLink().ifPresent(l => result.link = l);
+			i.getContent().ifPresent(c => result.content = c);
+			i.getPubDateZonedDateTime().ifPresent(d => {
+				result.pubdate = parseDateTime(d);
+			});
+			return result;
+		});
+
+	}
+	
+	/*
+	Main function to get all the content for the home page and such
+	*/
+	public function getItems(perpage=10, start=1) {
+		return queryExecute('
+		select i.title, i.posted, i.url, i.content, b.name
+		from items i
+		inner join blogs b 
+		on i.blogidfk = b.id
+		order by i.posted desc
+		limit :perpage
+		offset :offset
+		', {
+			perpage: arguments.perpage, 
+			offset: arguments.start-1
+		}, { returnType:'array' });
+	}
+
+	public function getItemCount() {
+		q = queryExecute('select count(id) as total from items');
+		return q.total[1];
+	}
+
+	/*
+	I'm the main function to handle 
+		a) getting blogs
+		b) looping over each
+		c) getting items for each
+		d) checking if an item is a new item
+		e) if not, inserted it
+	*/
+	public function loadFeeds() {
+		blogs = getBlogs();
+		blogs.each(b => {
+			items = fetchItemsForFeed(b);
+			println('For blog #b.name# (#b.id#) I got #items.len()# items.');
+			items.each(i => {
+				/*
+				 I could do this inline in the code below, but I wanted to call
+				 it out more. We are only using 1k chars of content. We may end up
+				 displaying even less, and I may change this later.
+
+				 We are also going to remove all tags.
+				 */
+				content = i.content.rereplace('<.*?>','','all').left(1000);
+
+				queryExecute('
+				insert ignore into items(blogidfk, title, posted, url, content)
+				values(:blogidfk, :title, :posted, :url, :content)
+				', {
+					blogidfk: b.id, 
+					title: i.title,
+					posted: i.pubdate,
+					url: i.link,
+					content:content
+				});
+			});
+
+		});
+	}
+}

@@ -1,0 +1,44 @@
+
+<bx:param name="attributes.title" default="">
+
+<bx:if thisTag.executionMode is "start">
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<link rel="stylesheet" href="/static/css/app.css">
+	<link
+	rel="stylesheet"
+	media="(prefers-color-scheme:light)"
+	href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.0/cdn/themes/light.css"
+	/>
+	<link
+	rel="stylesheet"
+	media="(prefers-color-scheme:dark)"
+	href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.0/cdn/themes/dark.css"
+	onload="document.documentElement.classList.add('sl-theme-dark');"
+	/>
+
+	<script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.0/cdn/shoelace-autoloader.js"></script>
+
+	<title><bx:output>#attributes.title#</bx:output></title>
+</head>
+<body>
+
+	<div class="header">
+		<a href="/">Home</a> / <a href="/blogs.bxm">Blogs</a>
+	</div>
+
+
+	<main>
+
+<bx:else>
+
+	</main>
+</body>
+</html>
+
+</bx:if>

@@ -1,0 +1,20 @@
+<bx:set blogs = application.aggregator.getBlogs()>
+
+<bx:module template="tags/layout.bxm" title="Aggregator - Blogs">
+
+	<h2>List of Blogs</h2>
+
+	<p>
+	Here are the blogs currently indexed by the aggregator:
+	</p>
+
+	<bx:output query="blogs">
+		
+		<p>
+		<a href="#url#">#name#</a> (<a href="#rssurl#">feed url</a>)
+		</p>
+
+	</bx:output>
+
+
+</bx:module>

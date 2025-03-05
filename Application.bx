@@ -1,0 +1,31 @@
+class {
+
+	this.name = 'bl_agg';
+
+	this.datasource = {
+		driver:"mysql",
+		host:"192.168.68.50",
+		port:3306,
+		database:"aggregator", 
+		username:"boxlang",
+		password:server.system.environment.MYSQL_PWORD
+	};
+
+	this.javaSettings = {
+		loadPaths:[expandPath('./rssreader.jar')]
+	};
+
+	function onApplicationStart() {
+		application.aggregator = new components.aggregator();
+	}
+
+	function onRequestStart() {
+		
+		if(url.keyExists('refresh')) {
+			applicationStop();
+			bx:location url="/";
+		}
+		
+	}
+
+}

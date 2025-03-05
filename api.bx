@@ -1,0 +1,13 @@
+class {
+
+	url.returnFormat = "json";
+
+	@returnFormat(json)
+	remote function getItems(numeric start=1) {
+		return {
+			items: application.aggregator.getItems(start=arguments.start), 
+			total: application.aggregator.getItemCount()
+		}
+		
+	}
+}
