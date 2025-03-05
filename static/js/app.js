@@ -63,10 +63,17 @@ async function loadItems(start) {
 		if(content.trim() === '') content = 'No content provided in feed.';
 		let item = `
 			<sl-card class="header-header item">
+ <img
+    slot="image"
+    src="https://v1.screenshot.11ty.dev/${encodeURIComponent(i.url)}/medium/1:1"
+    alt="${i.title}" style2="height:400px; object-fit:contain"
+  />
+
 				<div slot="header">
-					${i.title}
+					<strong>${i.title}</strong> 
 					<sl-icon-button name="link" label="Visit" href="${i.url}" target="_blank"></sl-icon-button>
 				</div>
+				
 				${content}
 				<div slot="footer"><strong>${i.name}</strong> at ${dtFormat(i.posted)}</div>
 			</sl-card>
