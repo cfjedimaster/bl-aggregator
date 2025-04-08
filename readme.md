@@ -4,4 +4,15 @@ This is a simple BoxLang based blog aggregator. On a regular schedule, it will c
 
 ## To Do
 
-Um, detail everything. ;) But blog post first.
+Define these environment settings with correct values:
+
+* MYSQL_HOST
+* MYSQL_PORT
+* MYSQL_USERNAME
+* MYSQL_PWORD
+
+Install the MySQL module:
+
+```
+install-bx-module bx-mysql
+```

@@ -29,6 +29,13 @@ class {
 			i.getTitle().ifPresent(t => result.title = t);
 			i.getLink().ifPresent(l => result.link = l);
 			i.getContent().ifPresent(c => result.content = c);
+			i.getDescription().ifPresent(c => {
+				/*
+				 So, some feeds had content, some had this. I think it is safe
+				 to say that if this exists and content is blank, just overwrite.
+				*/
+				if(result.content == '') result.content = c;
+			})
 			i.getPubDateZonedDateTime().ifPresent(d => {
 				result.pubdate = parseDateTime(d);
 			});
@@ -41,18 +48,22 @@ class {
 	Main function to get all the content for the home page and such
 	*/
 	public function getItems(perpage=10, start=1) {
+		/*
+		Note, I had bound params for limit and offset, but they stopped
+		working on a new MySQL install. Google seemed to imply they *never* should
+		have worked. So... yeah, not sure.
+		*/
 		return queryExecute('
 		select i.title, i.posted, i.url, i.content, b.name
 		from items i
 		inner join blogs b 
 		on i.blogidfk = b.id
 		order by i.posted desc
-		limit :perpage
-		offset :offset
+		limit #perpage#
+		offset #arguments.start-1#
 		', {
-			perpage: arguments.perpage, 
-			offset: arguments.start-1
 		}, { returnType:'array' });
+
 	}
 
 	public function getItemCount() {
@@ -74,6 +85,7 @@ class {
 			items = fetchItemsForFeed(b);
 			println('For blog #b.name# (#b.id#) I got #items.len()# items.');
 			items.each(i => {
+if(b.name.findNoCase("Ortus")) println(i);
 				/*
 				 I could do this inline in the code below, but I wanted to call
 				 it out more. We are only using 1k chars of content. We may end up

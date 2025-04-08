@@ -1,4 +1,4 @@
-<bx:module template="tags/layout.bxm" title="Aggregator">
+<bx:component template="tags/layout.bxm" title="Aggregator">
 
 <h2>Latest Items <span id="itemCount"></span></h2>
 
@@ -13,4 +13,4 @@
 </div>
 
 <script src="static/js/app.js"></script>
-</bx:module>
+</bx:component>
