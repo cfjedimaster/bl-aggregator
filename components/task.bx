@@ -1,0 +1,19 @@
+class {
+
+	property name="scheduler";
+
+	function configure(){
+		// Setup Scheduler Properties
+		scheduler.setSchedulerName( "FeedAggregator" )
+		scheduler.setTimezone( "UTC" )
+
+		scheduler.task( "Get Feeds" )
+			.call( () => {
+				println("Beginning aggregation");
+				application.aggregator.loadFeeds();
+				println( "Aggregatio ended at: #now()#" );
+			} )
+			.every( 4, "hour" );
+	}
+
+}

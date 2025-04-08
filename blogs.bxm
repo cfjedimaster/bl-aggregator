@@ -1,6 +1,6 @@
 <bx:set blogs = application.aggregator.getBlogs()>
 
-<bx:module template="tags/layout.bxm" title="Aggregator - Blogs">
+<bx:component template="tags/layout.bxm" title="Aggregator - Blogs">
 
 	<h2>List of Blogs</h2>
 
@@ -17,4 +17,4 @@
 	</bx:output>
 
 
-</bx:module>
+</bx:component>
