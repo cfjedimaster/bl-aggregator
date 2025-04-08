@@ -16,3 +16,5 @@ Install the MySQL module:
 ```
 install-bx-module bx-mysql
 ```
+
+A data dump of the schema and initial blogs may be found in `aggregator.sql`.
