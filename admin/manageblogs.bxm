@@ -1,0 +1,27 @@
+<bx:set blogs = application.aggregator.getBlogs()>
+
+<bx:component template="../tags/layout.bxm" title="Aggregator - Manage Blogs">
+
+<h2>Manage Blogs</h2>
+
+<table id="blogTable">
+<thead>
+	<tr>
+		<th>Name</th>
+		<th>URL</th>
+		<th>Item Count</th>
+	</tr>
+</thead>
+<tbody>
+<bx:output query="blogs">
+	<tr>
+		<td><a href="blog.bxm?id=#id#">#name#</a></td>
+		<td><a href="#url#" target="_blank">#url#</a> <sl-icon name="box-arrow-up-right"></sl-icon></td>
+		<td>#itemcount#</td>
+	</tr>
+</bx:output>
+</tbody>
+</table>
+
+</bx:component>
+

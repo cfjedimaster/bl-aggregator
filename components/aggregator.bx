@@ -4,11 +4,27 @@ class {
 		variables.rss = createObject('java', 'com.apptasticsoftware.rssreader.RssReader');
 	}
 
+	public function getBlog(required numeric id) {
+		blog = queryExecute('
+select id, name, url, rssurl
+from blogs 
+where id = :id
+		', { id: id });
+
+		if(blog.recordCount == 0) throw(message="Blog #url.id# does not exist.");
+		return blog.rowData(1);
+
+	}
+
+
 	public function getBlogs() {
 		return queryExecute('
-		select id, name, url, rssurl from blogs 
-		order by name asc
-		', { returnType:'array' });
+select b.id, b.name, b.url, b.rssurl, count(i.blogidfk) as itemcount
+from blogs b 
+left join items i on b.id = i.blogidfk
+group by b.id, b.name, b.url, b.rssurl
+order by b.name asc
+		');
 
 	}
 

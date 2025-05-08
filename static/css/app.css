@@ -36,3 +36,16 @@ sl-card [slot='header'] {
 	align-items: center;
 	justify-content: space-between;
 }
+
+/* Items used in admin */
+#blogTable {
+	border-collapse: collapse;
+	border: 1px solid white;
+	width: 100%;
+	max-width: 750px;
+}
+
+th, td {
+border: 1px solid white;
+padding: 5px; 
+}

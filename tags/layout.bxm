@@ -29,7 +29,7 @@
 <body>
 
 	<div class="header">
-		<a href="/">Home</a> / <a href="/blogs.bxm">Blogs</a>
+		<a href="/">Home</a> / <bx:if session.keyExists('isAdmin')><a href="/admin">Admin</a> / </bx:if> <a href="/blogs.bxm">Blogs</a>
 	</div>
 
 

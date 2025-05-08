@@ -1,0 +1,13 @@
+<bx:component template="../tags/layout.bxm" title="Aggregator - Admin">
+
+<h2>BL Aggregator Administrator</h2>
+
+<p>
+Currently the admin tool only lets you CRUD blogs. In the future, more power may be here. 
+</p>
+
+<p>
+<a href="manageblogs.bxm">Manage Blogs</a>
+</p>
+
+</bx:component>

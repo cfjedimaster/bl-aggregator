@@ -1,0 +1,9 @@
+<bx:script>
+if(!url.keyExists('id')) bx:location url="manageblogs.bxm";
+
+blog = application.aggregator.getBlog(url.id);
+</bx:script>
+
+<bx:component template="../tags/layout.bxm" title="Aggregator - Manage Blogs">
+
+</bx:component>

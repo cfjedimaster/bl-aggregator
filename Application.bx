@@ -1,6 +1,7 @@
 class {
 
 	this.name = "bl_agg";
+	this.sessionManagement = true;
 
 	this.datasource = {
 		driver:"mysql",
@@ -27,13 +28,33 @@ class {
 		CF_BR_KEY = server.system.environment?.CF_BR_KEY ?: '';
 
 		application.screenshotService = new components.screenshotService(accountId=CF_ACCOUNTID, apiKey=CF_BR_KEY, storePath=expandPath('./static/img/screenshot'));
+
+		/*
+		Used to administer blog CRUD, if not specified, you can't login.
+		*/
+		application.ADMIN_PASSWORD = server.system.environment?.ADMIN_PASSWORD ?: '';
+
 	}
 
-	function onRequestStart() {
+	function onRequestStart(required string req) {
 		
+		// RAY REMOVE ME OR ELSE!!!! 
+		application.aggregator = new components.aggregator();
+
+
 		if(url.keyExists('refresh')) {
 			applicationStop();
 			bx:location url="/";
+		}
+
+		if(req.findNoCase('/login.bxm') && form.keyExists('password') && application.ADMIN_PASSWORD !== '' && 
+	       form.password == application.ADMIN_PASSWORD) {
+			session.isAdmin = true;
+			bx:location url="/admin";
+		}
+
+		if(req.findNoCase('/admin') && !session.keyExists('isAdmin')) {
+			bx:location url="/login.bxm";
 		}
 		
 	}
