@@ -1,7 +1,6 @@
 class {
 
 	public function init() {
-		println('called init');
 		variables.rss = createObject('java', 'com.apptasticsoftware.rssreader.RssReader');
 	}
 
@@ -54,7 +53,7 @@ class {
 		have worked. So... yeah, not sure.
 		*/
 		return queryExecute('
-		select i.title, i.posted, i.url, i.content, b.name
+		select i.title, i.posted, i.url, i.content, b.name, i.screenshot
 		from items i
 		inner join blogs b 
 		on i.blogidfk = b.id
@@ -71,6 +70,11 @@ class {
 		return q.total[1];
 	}
 
+	public function getItemsNeedingScreenshots() {
+		q = queryExecute('select id, url from items where screenshot is null order by posted desc limit 5', {}, { returnType:'array'});
+		return q;
+	}
+
 	/*
 	I'm the main function to handle 
 		a) getting blogs
@@ -85,7 +89,7 @@ class {
 			items = fetchItemsForFeed(b);
 			println('For blog #b.name# (#b.id#) I got #items.len()# items.');
 			items.each(i => {
-if(b.name.findNoCase("Ortus")) println(i);
+
 				/*
 				 I could do this inline in the code below, but I wanted to call
 				 it out more. We are only using 1k chars of content. We may end up
@@ -109,4 +113,10 @@ if(b.name.findNoCase("Ortus")) println(i);
 
 		});
 	}
+
+	public function updateScreenshot(itemid, filename) {
+		queryExecute('update items set screenshot = :filename where id = #itemid#', { filename: filename });
+
+	}
+
 }

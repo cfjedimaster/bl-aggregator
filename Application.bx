@@ -19,6 +19,14 @@ class {
 
 	function onApplicationStart() {
 		application.aggregator = new components.aggregator();
+		/*
+		Currently we check for Cloudflare required ENV values and if they don't exist, 
+		default to empty strings. This lets people run the app w/o using Cloudflare
+		*/
+		CF_ACCOUNTID = server.system.environment?.CF_ACCOUNTID ?: '';
+		CF_BR_KEY = server.system.environment?.CF_BR_KEY ?: '';
+
+		application.screenshotService = new components.screenshotService(accountId=CF_ACCOUNTID, apiKey=CF_BR_KEY, storePath=expandPath('./static/img/screenshot'));
 	}
 
 	function onRequestStart() {
@@ -28,6 +36,10 @@ class {
 			bx:location url="/";
 		}
 		
+	}
+
+	function onError(e) {
+		writedump(var=e, label="Error");
 	}
 
 }

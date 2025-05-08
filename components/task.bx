@@ -11,9 +11,31 @@ class {
 			.call( () => {
 				println("Beginning aggregation");
 				application.aggregator.loadFeeds();
-				println( "Aggregatio ended at: #now()#" );
+				println( "Aggregation ended at: #now()#" );
 			} )
 			.every( 4, "hour" );
+
+
+		scheduler.task( "Get Screenshots" )
+			.call( () => {
+				println("Beginning screenshot operation, #now()#");
+				itemsToShoot = application.aggregator.getItemsNeedingScreenshots();
+				if(itemsToShoot.len() > 0) {
+					println('I got #itemsToShoot.len()# items to get screenshots for.');
+					itemsToShoot.each(item => {
+						println('going to call the ss service on #item.url#');
+						result = application.screenshotService.getScreenshot(item.url, 500, 500);
+						println('Successfully generated the screenshot');
+						application.aggregator.updateScreenshot(item.id, result);
+						println('Sleeping 15 seconds');
+						bx:sleep time=15*1000;
+					});
+				}
+				//application.aggregator.loadFeeds();
+				println( "Screenshot operation ended at: #now()#" );
+			} )
+			.every( 3, "minute" );
+
 	}
 
 }

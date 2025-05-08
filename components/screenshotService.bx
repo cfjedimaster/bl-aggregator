@@ -1,0 +1,58 @@
+class {
+
+	property name="accountId" type="string";
+	property name="apiKey" type="string";
+	property name="storePath" type="string";
+
+	/*
+	public function init(required accountId, required apiKey) {
+		return this;
+	}
+	*/
+
+	public function getScreenshot(required string blogurl, numeric width=720, numeric height=1280) {
+		/*
+		Handle cases where our creds are blank - ie folks want to run the demo w/o using Cloudflare
+		*/
+		if(variables.accountId == '' || variables.apiKey == '') return;
+
+		println("im being asked to get a ss for #blogurl# (#width#x#height#) and store it #variables.storepath#");
+
+		filename = slugify(blogurl.replace('https://','')) & ".png";
+
+		/*
+		It's possible we are being asked to create a SS that already exists. We shouldn't, but it's possible, 
+		so do a quick check first.
+		*/
+		if(fileExists(variables.storepath & "/" & filename)) {
+			println("#filename# already existed - exiting");
+			return;
+		}
+
+		body = {
+			url: blogurl, 
+			viewport: {
+				width: width, 
+				height: height
+			},
+			addStyleTag: [{ content: "::-webkit-scrollbar { display: none; }" }]
+		};
+
+		bx:http method="post" url="https://api.cloudflare.com/client/v4/accounts/#variables.accountId#/browser-rendering/screenshot" result="result" {
+			bx:httpparam type="header" name="Authorization" value="Bearer #variables.apiKey#";
+			bx:httpparam type="header" name="Content-Type" value="application/json";
+			bx:httpparam type="body" value=jsonSerialize(body);
+		}
+
+		if(result.status_code == 200) {
+			println('Saving to #filename#');
+			fileWrite(variables.storepath & "/" & filename, result.filecontent);
+			return filename;
+		} else {
+			println("Screenshot service error, #result.filecontent#");
+		}
+
+
+	}
+
+}

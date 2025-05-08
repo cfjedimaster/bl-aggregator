@@ -1,0 +1,24 @@
+defaultImg = '/static/img/logo.png';
+
+img = cgi.path_info.trim();
+println('img #img#');
+if(img == '') {
+	println('no path, load default');
+	bx:header name="Content-Type" value="image/*";
+	bx:content file=defaultImg type="image/png";
+}
+
+// todo - handle potential path traversal attacks
+img = img.replace('/','','all').replace('\','','all');
+println('to load, #img#');
+
+if(fileExists('./static/img/screenshot/#img#')) {
+	println('it exists');
+	bx:header name="Content-Type" value="image/*";
+	bx:content file='./static/img/screenshot/#img#' type="image/png";
+} else {
+	println('it does not');
+	bx:header name="Content-Type" value="image/*";
+	bx:content file=defaultImg type="image/png";
+}
+

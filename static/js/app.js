@@ -65,7 +65,7 @@ async function loadItems(start) {
 			<sl-card class="header-header item">
  <img
     slot="image"
-    src="https://v1.screenshot.11ty.dev/${encodeURIComponent(i.url)}/medium/1:1"
+    src="/screenshot.bxs/${i.screenshot}"
     alt="${i.title}" style2="height:400px; object-fit:contain"
   />
 
