@@ -46,6 +46,15 @@ sl-card [slot='header'] {
 }
 
 th, td {
-border: 1px solid white;
-padding: 5px; 
+	border: 1px solid white;
+	padding: 5px; 
+	font-family: var(--sl-font-sans);
+}
+
+sl-input {
+	margin-bottom: 20px;
+}
+
+form {
+	font-family: var(--sl-font-sans);
 }

@@ -1,10 +1,52 @@
 <bx:script>
 if(!url.keyExists('id')) bx:location url="manageblogs.bxm";
 
-blog = application.aggregator.getBlog(url.id);
+if(form.keyExists('delete')) {
+	application.aggregator.deleteBlog(url.id);
+	bx:location url="manageblogs.bxm";
+}
+
+if(form.keyExists('save')) {
+	blog = {
+		id:url.id, 
+		name:form.name, 
+		url:form.url, 
+		rssurl:form.rssurl
+	};
+
+	application.aggregator.saveBlog(blog);
+	bx:location url="manageblogs.bxm";
+}
+
+if(url.id != 0) {
+	blog = application.aggregator.getBlog(url.id);
+} else {
+	blog = { name:"", url: "", rssurl: ""}
+};
+
+bx:param name="form.name" default="#blog.name#";
+bx:param name="form.url" default="#blog.url#";
+bx:param name="form.rssurl" default="#blog.rssurl#";
+
 </bx:script>
 
 <bx:component template="../tags/layout.bxm" title="Aggregator - Manage Blog">
+
+<h2>Edit Blog</h2>
+
+<bx:output>
+<form class="input-validation-required" action="blog.bxm?id=#url.id#" method="post">
+
+	<sl-input name="name" label="Name" required value="#blog.name#"></sl-input>
+	<sl-input name="url" label="URL" type="url" required value="#blog.url#"></sl-input>
+	<sl-input name="rssurl" label="RSS URL" type="url" required value="#blog.rssurl#"></sl-input>
+
+	<sl-button href="manageblogs.bxm" variant="neutral">Cancel</sl-button>
+	<sl-button type="submit" variant="primary" name="save">Save</sl-button>
+	<sl-button type="submit" variant="danger" name="delete">Delete (Removes Items!!)</sl-button>
+
+</form>
+</bx:output>
 
 
 </bx:component>

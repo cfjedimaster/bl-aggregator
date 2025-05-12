@@ -4,6 +4,21 @@ class {
 		variables.rss = createObject('java', 'com.apptasticsoftware.rssreader.RssReader');
 	}
 
+	public function deleteBlog(required numeric id) {
+		/* 
+		1. get all items 
+		2. remove screenshots if any
+		3. delete items
+		4. delete blog
+
+		Currently deferring a bit.
+		*/
+		items = queryExecute('select id, screenshot from items where blogidfk=:blog', { blog: id });
+		println('got #items.recordcount# items to delete');
+		throw(message="Not implemented yet.");
+
+	}
+
 	public function getBlog(required numeric id) {
 		blog = queryExecute('
 select id, name, url, rssurl
@@ -128,6 +143,25 @@ order by b.name asc
 			});
 
 		});
+	}
+
+	public function saveBlog(blog) {
+
+		if(blog.id != 0) {
+			queryExecute('
+			update blogs set name = :name, url = :url, rssurl = :rssurl 
+			where id = :id
+			', {
+				name: blog.name, url: blog.url, rssurl: blog.rssurl, id: blog.id
+			});
+		} else {
+			queryExecute('
+			insert into blogs(name, url, rssurl) 
+			values(:name, :url, :rssurl)
+			', {
+				name: blog.name, url: blog.url, rssurl: blog.rssurl
+			});
+		}
 	}
 
 	public function updateScreenshot(itemid, filename) {

@@ -23,5 +23,9 @@
 </tbody>
 </table>
 
+<p>
+<sl-button href="blog.bxm?id=0" variant="primary">Add Blog</sl-button>
+</p>
+
 </bx:component>
 

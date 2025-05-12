@@ -1,3 +1,11 @@
+<bx:script>
+if(url.keyExists('agg')) {
+	// should I thread this? maybe
+	application.aggregator.loadFeeds();
+}
+
+</bx:script>
+
 <bx:component template="../tags/layout.bxm" title="Aggregator - Admin">
 
 <h2>BL Aggregator Administrator</h2>
@@ -6,8 +14,16 @@
 Currently the admin tool only lets you CRUD blogs. In the future, more power may be here. 
 </p>
 
+<bx:if url.keyExists('agg')>
 <p>
-<a href="manageblogs.bxm">Manage Blogs</a>
+Aggegation kicked off.
 </p>
+</bx:if>
+
+<p>
+<sl-button href="manageblogs.bxm" variant="primary">Manage Blogs</sl-button>
+<sl-button href="index.bxm?agg=1" variant="primary">Kick off Aggregration</sl-button>
+</p>
+
 
 </bx:component>
